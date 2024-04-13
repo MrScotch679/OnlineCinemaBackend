@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Controller, Get } from '@nestjs/common'
 import { User } from './decorators/user.decorator'
 import { UserService } from './user.service'
