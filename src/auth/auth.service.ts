@@ -32,10 +32,11 @@ export class AuthService {
 			password: await hash(body.password, salt)
 		})
 
-		const tokens = await this.createPaidToken(String(newUser._id))
+		const user = await newUser.save()
+		const tokens = await this.createPaidToken(String(user._id))
 
 		return {
-			user: this.getUserFields(newUser as UserModelInterface),
+			user: this.getUserFields(user as UserModelInterface),
 			...tokens
 		}
 	}
