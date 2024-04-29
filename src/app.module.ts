@@ -7,6 +7,8 @@ import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
 import { UserModule } from './user/user.module'
 import { MONGO_URI } from './constants/mongo.constants'
+import { GenreModule } from './genre/genre.module';
+import { FileModule } from './file/file.module';
 
 @Module({
 	imports: [
@@ -19,7 +21,9 @@ import { MONGO_URI } from './constants/mongo.constants'
 			})
 		}),
 		UserModule,
-		AuthModule
+		AuthModule,
+		GenreModule,
+		FileModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
