@@ -40,7 +40,7 @@ export class GenreService {
 		const genre = await this.GenreModel.findById(id)
 
 		if (!genre) {
-			throw new NotFoundException('Genre not found')
+			throw new NotFoundException(ErrorMessages.GENRE_NOT_FOUND)
 		}
 
 		return genre
@@ -59,7 +59,13 @@ export class GenreService {
 	}
 
 	async findBySlug(slug: string) {
-		return this.GenreModel.findOne({ slug }).exec()
+		const genre = await this.GenreModel.findOne({ slug }).exec()
+
+		if (!genre) {
+			throw new NotFoundException(ErrorMessages.GENRE_NOT_FOUND)
+		}
+
+		return genre
 	}
 
 	async createGenre() {

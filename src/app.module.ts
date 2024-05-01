@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module'
 import { MONGO_URI } from './constants/mongo.constants'
 import { GenreModule } from './genre/genre.module';
 import { FileModule } from './file/file.module';
+import { ActorModule } from './actor/actor.module';
 
 @Module({
 	imports: [
@@ -23,7 +24,8 @@ import { FileModule } from './file/file.module';
 		UserModule,
 		AuthModule,
 		GenreModule,
-		FileModule
+		FileModule,
+		ActorModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
