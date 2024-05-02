@@ -13,7 +13,7 @@ import { FileInterceptor } from '@nestjs/platform-express'
 
 @Controller('file')
 export class FileController {
-	constructor(private readonly FileService: FileService) {}
+	constructor(private readonly fileService: FileService) {}
 
 	@Post()
 	@HttpCode(200)
@@ -23,6 +23,6 @@ export class FileController {
 		@UploadedFile() file: Express.Multer.File,
 		@Query('folder') folder?: string
 	) {
-		return this.FileService.saveFiles([file], folder)
+		return this.fileService.saveFiles([file], folder)
 	}
 }

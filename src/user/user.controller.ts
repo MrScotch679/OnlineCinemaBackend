@@ -20,30 +20,30 @@ import { IdValidationPipe } from 'src/pipes/id.validation.pipe'
 
 @Controller('user')
 export class UserController {
-	constructor(private readonly UserService: UserService) {}
+	constructor(private readonly userService: UserService) {}
 
 	@Get('profile')
 	@Auth()
 	async getProfile(@User('_id') _id: string) {
-		return this.UserService.getProfile(_id)
+		return this.userService.getProfile(_id)
 	}
 
 	@Get('count')
 	@Auth(RolesEnum.ADMIN)
 	async getUsersCount() {
-		return this.UserService.getCountOfUsers()
+		return this.userService.getCountOfUsers()
 	}
 
 	@Get()
 	@Auth(RolesEnum.ADMIN)
 	async getAllUsers(@Query('search') searchTerm?: string) {
-		return this.UserService.getAllUsers(searchTerm)
+		return this.userService.getAllUsers(searchTerm)
 	}
 
 	@Get(':id')
 	@Auth(RolesEnum.ADMIN)
 	async getUser(@Param('id', IdValidationPipe) id: string) {
-		return this.UserService.getProfile(id)
+		return this.userService.getProfile(id)
 	}
 
 	@UsePipes(new ValidationPipe())
@@ -51,7 +51,7 @@ export class UserController {
 	@HttpCode(200)
 	@Auth()
 	async updateProfile(@User('_id') _id: string, @Body() dto: UpdateUserDto) {
-		return this.UserService.updateProfile(_id, dto)
+		return this.userService.updateProfile(_id, dto)
 	}
 
 	@UsePipes(new ValidationPipe())
@@ -62,13 +62,13 @@ export class UserController {
 		@Param('id', IdValidationPipe) id: string,
 		@Body() dto: UpdateUserDto
 	) {
-		return this.UserService.updateProfile(id, dto)
+		return this.userService.updateProfile(id, dto)
 	}
 
 	@Delete(':id')
 	@HttpCode(200)
 	@Auth(RolesEnum.ADMIN)
 	async deleteUser(@Param('id', IdValidationPipe) id: string) {
-		return this.UserService.deleteUser(id)
+		return this.userService.deleteUser(id)
 	}
 }

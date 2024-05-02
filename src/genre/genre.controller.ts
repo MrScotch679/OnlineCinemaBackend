@@ -20,26 +20,26 @@ import { CreateGenreDto } from './dto/create-genre.dto'
 
 @Controller('genre')
 export class GenreController {
-	constructor(private readonly GenreService: GenreService) {}
+	constructor(private readonly genreService: GenreService) {}
 
 	@Get('by-slug/:slug')
 	async getBySlug(@Param('slug') slug: string) {
-		return this.GenreService.findBySlug(slug)
+		return this.genreService.findBySlug(slug)
 	}
 
 	@Get('collections')
 	async getCollections() {
-		return this.GenreService.getGenresCollection()
+		return this.genreService.getGenresCollection()
 	}
 
 	@Get()
 	async getAllGenres(@Query('searchTerm') searchTerm?: string) {
-		return this.GenreService.getAllGenres(searchTerm)
+		return this.genreService.getAllGenres(searchTerm)
 	}
 
 	@Get(':id')
 	async getGenreById(@Param('id', IdValidationPipe) id: string) {
-		return this.GenreService.getGenreById(id)
+		return this.genreService.getGenreById(id)
 	}
 
 	@UsePipes(new ValidationPipe())
@@ -50,7 +50,7 @@ export class GenreController {
 		@Param('id', IdValidationPipe) id: string,
 		@Body() dto: CreateGenreDto
 	) {
-		return this.GenreService.updateGenre(id, dto)
+		return this.genreService.updateGenre(id, dto)
 	}
 
 	@UsePipes(new ValidationPipe())
@@ -58,13 +58,13 @@ export class GenreController {
 	@HttpCode(200)
 	@Auth(RolesEnum.ADMIN)
 	async createGenre() {
-		return this.GenreService.createGenre()
+		return this.genreService.createGenre()
 	}
 
 	@Delete(':id')
 	@HttpCode(200)
 	@Auth(RolesEnum.ADMIN)
 	async deleteGenre(@Param('id', IdValidationPipe) id: string) {
-		return this.GenreService.deleteGenre(id)
+		return this.genreService.deleteGenre(id)
 	}
 }

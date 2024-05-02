@@ -19,21 +19,21 @@ import { ActorDto } from './dto/actor.dto'
 
 @Controller('actor')
 export class ActorController {
-	constructor(private readonly ActorService: ActorService) {}
+	constructor(private readonly actorService: ActorService) {}
 
 	@Get('by-slug/:slug')
 	async getBySlug(@Param('slug') slug: string) {
-		return this.ActorService.getActorBySlug(slug)
+		return this.actorService.getActorBySlug(slug)
 	}
 
 	@Get()
 	async getAllActors(@Query('searchTerm') searchTerm?: string) {
-		return this.ActorService.getAllActors(searchTerm)
+		return this.actorService.getAllActors(searchTerm)
 	}
 
 	@Get(':id')
 	async getActorById(@Param('id', IdValidationPipe) id: string) {
-		return this.ActorService.getActorById(id)
+		return this.actorService.getActorById(id)
 	}
 
 	@UsePipes(new ValidationPipe())
@@ -41,7 +41,7 @@ export class ActorController {
 	@HttpCode(200)
 	@Auth(RolesEnum.ADMIN)
 	async createActor() {
-		return this.ActorService.createActor()
+		return this.actorService.createActor()
 	}
 
 	@UsePipes(new ValidationPipe())
@@ -52,7 +52,7 @@ export class ActorController {
 		@Param('id', IdValidationPipe) id: string,
 		@Body() dto: ActorDto
 	) {
-		return this.ActorService.updateActor(id, dto)
+		return this.actorService.updateActor(id, dto)
 	}
 
 	@UsePipes(new ValidationPipe())
@@ -60,6 +60,6 @@ export class ActorController {
 	@HttpCode(200)
 	@Auth(RolesEnum.ADMIN)
 	async deleteActor(@Param('id', IdValidationPipe) id: string) {
-		return this.ActorService.deleteActor(id)
+		return this.actorService.deleteActor(id)
 	}
 }
