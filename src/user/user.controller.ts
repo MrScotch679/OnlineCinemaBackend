@@ -17,6 +17,8 @@ import { Auth } from 'src/auth/decorators/auth.decorators'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { RolesEnum } from 'src/auth/auth.interface'
 import { IdValidationPipe } from 'src/pipes/id.validation.pipe'
+import { Types } from 'mongoose'
+import { UserModelInterface } from './user.model'
 
 @Controller('user')
 export class UserController {
@@ -44,6 +46,22 @@ export class UserController {
 	@Auth(RolesEnum.ADMIN)
 	async getUser(@Param('id', IdValidationPipe) id: string) {
 		return this.userService.getProfile(id)
+	}
+
+	@Get('profile/favorites')
+	@Auth()
+	async getFavoriteMovies(@User('_id') _id: Types.ObjectId) {
+		return this.userService.getFavoriteMovies(_id)
+	}
+
+	@Put('profile/favorites')
+	@HttpCode(200)
+	@Auth()
+	async toggleFavoriteMovie(
+		@Body('movieId') movieId: Types.ObjectId,
+		@User() user: UserModelInterface
+	) {
+		return this.userService.toggleFavoriteMovie(movieId, user)
 	}
 
 	@UsePipes(new ValidationPipe())
