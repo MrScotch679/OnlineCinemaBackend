@@ -87,6 +87,24 @@ export class MovieService {
 		return updatedMovie
 	}
 
+	async updateMovieRating(movieId: Types.ObjectId, newRating: number) {
+		const updatedMovie = await this.MovieModel.findByIdAndUpdate(
+			movieId,
+			{
+				rating: newRating
+			},
+			{
+				new: true
+			}
+		).exec()
+
+		if (!updatedMovie) {
+			throw new NotFoundException(ErrorMessages.MOVIE_NOT_FOUND)
+		}
+
+		return updatedMovie
+	}
+
 	async getAllMovies(searchTerm?: string) {
 		let options = {}
 
