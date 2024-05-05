@@ -4,11 +4,14 @@ import { GenreModel } from './genre.model'
 import { ModelType } from '@typegoose/typegoose/lib/types'
 import { CreateGenreDto } from './dto/create-genre.dto'
 import { ErrorMessages } from 'src/constants/error-messages'
+import { MovieService } from 'src/movie/movie.service'
+import { ICollection } from './genre.interface'
 
 @Injectable()
 export class GenreService {
 	constructor(
-		@InjectModel(GenreModel) private readonly GenreModel: ModelType<GenreModel>
+		@InjectModel(GenreModel) private readonly GenreModel: ModelType<GenreModel>,
+		private readonly movieService: MovieService
 	) {}
 
 	async getAllGenres(searchTerm?: string) {
@@ -90,10 +93,24 @@ export class GenreService {
 		return deletedGenre
 	}
 
-	// FIXME: refactor
 	async getGenresCollection() {
 		const genres = await this.getAllGenres()
-		const genresCollection = genres
+
+		const genresCollection = await Promise.all(
+			genres.map(async (genre) => {
+				const movie = await this.movieService.getMoviesByGenres([genre._id])
+
+				const result: ICollection = {
+					_id: String(genre._id),
+					image: movie?.[0]?.bigPoster || '',
+					title: genre.name,
+					slug: genre.slug
+				}
+
+				return result
+			})
+		)
+
 		return genresCollection
 	}
 }
