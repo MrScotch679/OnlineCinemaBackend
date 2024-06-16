@@ -33,8 +33,11 @@ export class GenreController {
 	}
 
 	@Get()
-	async getAllGenres(@Query('searchTerm') searchTerm?: string) {
-		return this.genreService.getAllGenres(searchTerm)
+	async getAllGenres(
+		@Query('searchTerm') searchTerm?: string,
+		@Query('limit') limit?: number
+	) {
+		return this.genreService.getAllGenres(searchTerm, limit)
 	}
 
 	@Get(':id')

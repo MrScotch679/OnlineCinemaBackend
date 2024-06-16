@@ -6,6 +6,7 @@ import { CreateGenreDto } from './dto/create-genre.dto'
 import { ErrorMessages } from 'src/constants/error-messages'
 import { MovieService } from 'src/movie/movie.service'
 import { ICollection } from './genre.interface'
+import { QueryOptions } from 'mongoose'
 
 @Injectable()
 export class GenreService {
@@ -14,8 +15,8 @@ export class GenreService {
 		private readonly movieService: MovieService
 	) {}
 
-	async getAllGenres(searchTerm?: string) {
-		let options = {}
+	async getAllGenres(searchTerm?: string, limit?: number) {
+		let options: QueryOptions = {}
 
 		if (searchTerm) {
 			options = {
@@ -31,6 +32,10 @@ export class GenreService {
 					}
 				]
 			}
+		}
+
+		if (limit) {
+			options.limit = limit
 		}
 
 		return this.GenreModel.find(options)
