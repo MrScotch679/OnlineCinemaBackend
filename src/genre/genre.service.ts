@@ -16,32 +16,37 @@ export class GenreService {
 	) {}
 
 	async getAllGenres(searchTerm?: string, limit?: number) {
-		let options: QueryOptions = {}
+		const searchOptions: QueryOptions = {}
 
 		if (searchTerm) {
-			options = {
-				$or: [
-					{
-						name: new RegExp(searchTerm, 'i')
-					},
-					{
-						slug: new RegExp(searchTerm, 'i')
-					},
-					{
-						description: new RegExp(searchTerm, 'i')
-					}
-				]
-			}
+			searchOptions.$or = [
+				{
+					name: new RegExp(searchTerm, 'i')
+				},
+				{
+					slug: new RegExp(searchTerm, 'i')
+				},
+				{
+					description: new RegExp(searchTerm, 'i')
+				}
+			]
 		}
 
-		if (limit) {
-			options.limit = limit
-		}
-
-		return this.GenreModel.find(options)
+		let query = this.GenreModel.find(searchOptions)
 			.select('-updatedAt -__v')
 			.sort({ createdAt: 'desc' })
-			.exec()
+
+		if (limit) {
+			query = query.limit(limit)
+		}
+
+		const genres = await query.exec()
+
+		if (!genres) {
+			throw new NotFoundException(ErrorMessages.GENRE_NOT_FOUND)
+		}
+
+		return genres
 	}
 
 	async getGenreById(id: string) {
