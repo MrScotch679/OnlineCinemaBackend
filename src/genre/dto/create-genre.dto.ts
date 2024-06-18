@@ -2,7 +2,7 @@ import { IsString } from 'class-validator'
 
 export class CreateGenreDto {
 	@IsString()
-	name: string
+	title: string
 
 	@IsString()
 	slug: string

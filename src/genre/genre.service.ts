@@ -21,7 +21,7 @@ export class GenreService {
 		if (searchTerm) {
 			searchOptions.$or = [
 				{
-					name: new RegExp(searchTerm, 'i')
+					title: new RegExp(searchTerm, 'i')
 				},
 				{
 					slug: new RegExp(searchTerm, 'i')
@@ -83,7 +83,7 @@ export class GenreService {
 
 	async createGenre() {
 		const defaultValue: CreateGenreDto = {
-			name: '',
+			title: '',
 			slug: '',
 			description: '',
 			icon: ''
@@ -113,7 +113,7 @@ export class GenreService {
 				const result: ICollection = {
 					_id: String(genre._id),
 					image: movie?.[0]?.bigPoster || '',
-					title: genre.name,
+					title: genre.title,
 					slug: genre.slug
 				}
 
